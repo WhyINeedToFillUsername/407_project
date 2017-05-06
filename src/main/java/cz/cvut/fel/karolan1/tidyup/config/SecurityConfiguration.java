@@ -1,22 +1,24 @@
 package cz.cvut.fel.karolan1.tidyup.config;
 
 import cz.cvut.fel.karolan1.tidyup.security.*;
-import cz.cvut.fel.karolan1.tidyup.web.filter.CsrfCookieGeneratorFilter;
+import cz.cvut.fel.karolan1.tidyup.security.jwt.*;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.csrf.CsrfFilter;
+
 
 import javax.inject.Inject;
 
@@ -26,25 +28,13 @@ import javax.inject.Inject;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
-    private JHipsterProperties jHipsterProperties;
-
-    @Inject
-    private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler;
-
-    @Inject
-    private AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler;
-
-    @Inject
-    private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
-
-    @Inject
     private Http401UnauthorizedEntryPoint authenticationEntryPoint;
 
     @Inject
     private UserDetailsService userDetailsService;
 
     @Inject
-    private RememberMeServices rememberMeServices;
+    private TokenProvider tokenProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -73,35 +63,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf()
-        .and()
-            .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
             .exceptionHandling()
-            .accessDeniedHandler(new CustomAccessDeniedHandler())
             .authenticationEntryPoint(authenticationEntryPoint)
         .and()
-            .rememberMe()
-            .rememberMeServices(rememberMeServices)
-            .rememberMeParameter("remember-me")
-            .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
-        .and()
-            .formLogin()
-            .loginProcessingUrl("/api/authentication")
-            .successHandler(ajaxAuthenticationSuccessHandler)
-            .failureHandler(ajaxAuthenticationFailureHandler)
-            .usernameParameter("j_username")
-            .passwordParameter("j_password")
-            .permitAll()
-        .and()
-            .logout()
-            .logoutUrl("/api/logout")
-            .logoutSuccessHandler(ajaxLogoutSuccessHandler)
-            .deleteCookies("JSESSIONID", "CSRF-TOKEN")
-            .permitAll()
-        .and()
+            .csrf()
+            .disable()
             .headers()
             .frameOptions()
             .disable()
+        .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
             .authorizeRequests()
             .antMatchers("/api/register").permitAll()
@@ -115,8 +87,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/v2/api-docs/**").permitAll()
             .antMatchers("/configuration/ui").permitAll()
             .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/protected/**").authenticated() ;
+            .antMatchers("/protected/**").authenticated()
 
+        .and()
+            .apply(securityConfigurerAdapter());
+
+    }
+
+    private JWTConfigurer securityConfigurerAdapter() {
+        return new JWTConfigurer(tokenProvider);
     }
 
     @Bean

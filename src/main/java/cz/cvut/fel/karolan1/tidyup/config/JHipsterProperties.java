@@ -3,8 +3,6 @@ package cz.cvut.fel.karolan1.tidyup.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.cors.CorsConfiguration;
 
-import javax.validation.constraints.NotNull;
-
 
 /**
  * Properties specific to JHipster.
@@ -172,23 +170,50 @@ public class JHipsterProperties {
 
     public static class Security {
 
-        private final RememberMe rememberMe = new RememberMe();
+        private final Authentication authentication = new Authentication();
 
-        public RememberMe getRememberMe() {
-            return rememberMe;
+        public Authentication getAuthentication() {
+            return authentication;
         }
 
-        public static class RememberMe {
+        public static class Authentication {
 
-            @NotNull
-            private String key;
+            private final Jwt jwt = new Jwt();
 
-            public String getKey() {
-                return key;
+            public Jwt getJwt() {
+                return jwt;
             }
 
-            public void setKey(String key) {
-                this.key = key;
+            public static class Jwt {
+
+                private String secret;
+
+                private long tokenValidityInSeconds = 1800;
+                private long tokenValidityInSecondsForRememberMe = 2592000;
+
+                public String getSecret() {
+                    return secret;
+                }
+
+                public void setSecret(String secret) {
+                    this.secret = secret;
+                }
+
+                public long getTokenValidityInSeconds() {
+                    return tokenValidityInSeconds;
+                }
+
+                public void setTokenValidityInSeconds(long tokenValidityInSeconds) {
+                    this.tokenValidityInSeconds = tokenValidityInSeconds;
+                }
+
+                public long getTokenValidityInSecondsForRememberMe() {
+                    return tokenValidityInSecondsForRememberMe;
+                }
+
+                public void setTokenValidityInSecondsForRememberMe(long tokenValidityInSecondsForRememberMe) {
+                    this.tokenValidityInSecondsForRememberMe = tokenValidityInSecondsForRememberMe;
+                }
             }
         }
     }

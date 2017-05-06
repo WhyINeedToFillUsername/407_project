@@ -18,12 +18,11 @@ public interface UserMapper {
     UserDTO userToUserDTO(User user);
 
     List<UserDTO> usersToUserDTOs(List<User> users);
-    
+
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
     @Mapping(target = "lastModifiedDate", ignore = true)
-    @Mapping(target = "persistentTokens", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "activationKey", ignore = true)
     @Mapping(target = "resetKey", ignore = true)

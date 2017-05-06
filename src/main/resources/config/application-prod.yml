@@ -73,9 +73,11 @@ jhipster:
         ehcache:
             maxBytesLocalHeap: 256M
     security:
-        rememberMe:
-            # security key (this key should be unique for your application, and kept secret)
-            key: 8dab5f27baaec77194f7d482be9866580412018c
+        authentication:
+            jwt:
+                secret: da4f86ac2a8def18021bfb48841412da82f3f5df
+                # Token is valid 24 hours
+                tokenValidityInSeconds: 86400
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: tidyUp@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration

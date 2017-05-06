@@ -4,7 +4,6 @@ import cz.cvut.fel.karolan1.tidyup.domain.Authority;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.AuthorityRepository;
-import cz.cvut.fel.karolan1.tidyup.repository.PersistentTokenRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.search.UserSearchRepository;
 import cz.cvut.fel.karolan1.tidyup.security.SecurityUtils;
@@ -45,9 +44,6 @@ public class UserService {
 
     @Inject
     private UserSearchRepository userSearchRepository;
-
-    @Inject
-    private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
     private AuthorityRepository authorityRepository;
@@ -249,24 +245,6 @@ public class UserService {
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
         user.getAuthorities().size(); // eagerly load the association
         return user;
-    }
-
-    /**
-     * Persistent Token are used for providing automatic authentication, they should be automatically deleted after
-     * 30 days.
-     * <p>
-     * This is scheduled to get fired everyday, at midnight.
-     * </p>
-     */
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void removeOldPersistentTokens() {
-        LocalDate now = LocalDate.now();
-        persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1)).stream().forEach(token -> {
-            log.debug("Deleting token {}", token.getSeries());
-            User user = token.getUser();
-            user.getPersistentTokens().remove(token);
-            persistentTokenRepository.delete(token);
-        });
     }
 
     /**
