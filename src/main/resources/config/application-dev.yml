@@ -61,12 +61,20 @@ liquibase:
 
 server:
     port: 8080
+#    address: 192.168.137.1
 
 # ===================================================================
 # JHipster specific properties
 # ===================================================================
 
 jhipster:
+    cors: #By default CORS are not enabled. Uncomment to enable.
+        allowed-origins: "*"
+        allowed-methods: GET, PUT, POST, DELETE, OPTIONS
+        allowed-headers: "*"
+        exposed-headers:
+        allow-credentials: true
+        max-age: 1800
     cache: # Hibernate 2nd level cache, used by CacheConfiguration
         timeToLiveSeconds: 3600
         ehcache:
