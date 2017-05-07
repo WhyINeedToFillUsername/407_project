@@ -4,10 +4,10 @@
         .module('tidyUpApp')
         .factory('FriendsChoreEvent', FriendsChoreEvent);
 
-    FriendsChoreEvent.$inject = ['$resource'];
+    FriendsChoreEvent.$inject = ['$resource', 'SERVER_URL'];
 
-    function FriendsChoreEvent($resource) {
-        var resourceUrl = 'api/friends-chore-events';
+    function FriendsChoreEvent($resource, SERVER_URL) {
+        var resourceUrl = SERVER_URL + 'api/friends-chore-events';
 
         return $resource(resourceUrl, {}, {
             'query': {

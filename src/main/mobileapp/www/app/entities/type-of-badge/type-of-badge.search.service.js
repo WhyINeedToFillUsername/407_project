@@ -5,10 +5,10 @@
         .module('tidyUpApp')
         .factory('TypeOfBadgeSearch', TypeOfBadgeSearch);
 
-    TypeOfBadgeSearch.$inject = ['$resource'];
+    TypeOfBadgeSearch.$inject = ['$resource', 'SERVER_URL'];
 
-    function TypeOfBadgeSearch($resource) {
-        var resourceUrl =  'api/_search/type-of-badges/:id';
+    function TypeOfBadgeSearch($resource, SERVER_URL) {
+        var resourceUrl = SERVER_URL + 'api/_search/type-of-badges/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true}

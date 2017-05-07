@@ -4,10 +4,10 @@
         .module('tidyUpApp')
         .factory('ChoreEvent', ChoreEvent);
 
-    ChoreEvent.$inject = ['$resource', 'DateUtils'];
+    ChoreEvent.$inject = ['$resource', 'DateUtils', 'SERVER_URL'];
 
-    function ChoreEvent ($resource, DateUtils) {
-        var resourceUrl =  'api/chore-events/:id';
+    function ChoreEvent ($resource, DateUtils, SERVER_URL) {
+        var resourceUrl = SERVER_URL + 'api/chore-events/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

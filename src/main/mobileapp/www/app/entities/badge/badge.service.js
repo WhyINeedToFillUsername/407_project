@@ -4,10 +4,10 @@
         .module('tidyUpApp')
         .factory('Badge', Badge);
 
-    Badge.$inject = ['$resource', 'DateUtils'];
+    Badge.$inject = ['$resource', 'DateUtils', 'SERVER_URL'];
 
-    function Badge ($resource, DateUtils) {
-        var resourceUrl =  'api/badges/:id';
+    function Badge ($resource, DateUtils, SERVER_URL) {
+        var resourceUrl = SERVER_URL + 'api/badges/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

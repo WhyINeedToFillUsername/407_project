@@ -4,10 +4,10 @@
         .module('tidyUpApp')
         .factory('TodoChore', TodoChore);
 
-    TodoChore.$inject = ['$resource', 'DateUtils'];
+    TodoChore.$inject = ['$resource', 'DateUtils', 'SERVER_URL'];
 
-    function TodoChore($resource, DateUtils) {
-        var resourceUrl = 'api/to-do/';
+    function TodoChore($resource, DateUtils, SERVER_URL) {
+        var resourceUrl = SERVER_URL + 'api/to-do/';
 
         return $resource(resourceUrl, {}, {
             'get': {

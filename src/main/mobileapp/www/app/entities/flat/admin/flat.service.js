@@ -4,10 +4,10 @@
         .module('tidyUpApp')
         .factory('Flat', Flat);
 
-    Flat.$inject = ['$resource', 'DateUtils'];
+    Flat.$inject = ['$resource', 'DateUtils', 'SERVER_URL'];
 
-    function Flat ($resource, DateUtils) {
-        var resourceUrl =  'api/flats/:id';
+    function Flat ($resource, DateUtils, SERVER_URL) {
+        var resourceUrl = SERVER_URL + 'api/flats/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

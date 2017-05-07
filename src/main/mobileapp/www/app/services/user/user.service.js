@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .factory('User', User);
 
-    User.$inject = ['$resource'];
+    User.$inject = ['$resource', 'SERVER_URL'];
 
-    function User ($resource) {
+    function User ($resource, SERVER_URL) {
         var service = $resource(SERVER_URL + 'api/users/:login', {}, {
             'query': {method: 'GET', isArray: true},
             'get': {

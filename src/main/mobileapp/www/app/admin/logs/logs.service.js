@@ -5,10 +5,10 @@
         .module('tidyUpApp')
         .factory('LogsService', LogsService);
 
-    LogsService.$inject = ['$resource'];
+    LogsService.$inject = ['$resource', 'SERVER_URL'];
 
-    function LogsService ($resource) {
-        var service = $resource('management/jhipster/logs', {}, {
+    function LogsService ($resource, SERVER_URL) {
+        var service = $resource(SERVER_URL + 'management/jhipster/logs', {}, {
             'findAll': { method: 'GET', isArray: true},
             'changeLevel': { method: 'PUT'}
         });

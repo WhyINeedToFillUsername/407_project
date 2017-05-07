@@ -39,6 +39,7 @@
 
             function authenticateSuccess (data, status, headers) {
                 var bearerToken = headers('Authorization');
+              console.log(headers());
                 if (angular.isDefined(bearerToken) && bearerToken.slice(0, 7) === 'Bearer ') {
                     var jwt = bearerToken.slice(7, bearerToken.length);
                     service.storeAuthenticationToken(jwt, credentials.rememberMe);

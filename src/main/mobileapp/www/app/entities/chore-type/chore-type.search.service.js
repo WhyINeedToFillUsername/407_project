@@ -5,10 +5,10 @@
         .module('tidyUpApp')
         .factory('ChoreTypeSearch', ChoreTypeSearch);
 
-    ChoreTypeSearch.$inject = ['$resource'];
+    ChoreTypeSearch.$inject = ['$resource', 'SERVER_URL'];
 
-    function ChoreTypeSearch($resource) {
-        var resourceUrl =  'api/_search/chore-types/:id';
+    function ChoreTypeSearch($resource, SERVER_URL) {
+        var resourceUrl = SERVER_URL + 'api/_search/chore-types/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true}
