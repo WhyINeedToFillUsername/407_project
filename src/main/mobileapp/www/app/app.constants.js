@@ -5,6 +5,6 @@
         .module('tidyUpApp')
         .constant('VERSION', "0.0.1-SNAPSHOT")
         .constant('DEBUG_INFO_ENABLED', true)
-        .constant('SERVER_URL', "http://127.0.0.1:8080/")
+        .constant('SERVER_URL', "http://192.168.137.1:8080/")
 ;
 })();

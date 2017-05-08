@@ -126,5 +126,5 @@
         "emailexists": "Zadaný e-mail je již použitý!",
         "idexists": "Nová entita {{ entityName }} ještě nemůže mít ID"
     },
-    "footer": "karolan1@fel.cvut.cz"
+    "footer": "CS407 TidyUp team"
 }

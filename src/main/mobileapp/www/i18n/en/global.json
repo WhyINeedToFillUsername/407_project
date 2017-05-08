@@ -129,5 +129,5 @@
         "dateexist": "Creation date cannot be modified!",
         "entitynotexists": "Requested {{ entityName }} does not exist!"
     },
-    "footer": "karolan1@fel.cvut.cz"
+    "footer": "CS407 TidyUp team"
 }
